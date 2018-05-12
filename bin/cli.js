@@ -3,20 +3,33 @@ const {Cac} = require('cac')
 const path = require('path')
 const ora = require('ora')
 const byun = require('../lib')
+const prompts = require('prompts')
+const kebabCase = require('lodash.kebabcase')
 
 const cli = new Cac({bin: 'byun'})
 
 cli
   .command('new', {
     desc: 'Create new project.'
-  }, async ipt => {
+  }, async ipts => {
     let cwd = process.cwd()
-    let name = ipt[0]
+    let name = ipts[0]
 
     if (!name) {
-      cwd = path.resolve(cwd, '../')
+      const {continueOk} = await prompts({
+        type: 'confirm',
+        name: 'continueOk',
+        message: `continue in the current folder??`
+      })
+
+      if (!continueOk) return ora('stop').fail()
+
       name = path.basename(cwd)
+      cwd = path.resolve(cwd, '../')
     }
+
+    // convert to kebab
+    name = kebabCase(name)
 
     const spinner = ora(`Creating "${name}" project.`).start()
     try {
@@ -28,5 +41,3 @@ cli
   })
 
 cli.parse()
-
-if (!cli.matchedCommand) cli.showHelp()
