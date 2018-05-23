@@ -1082,6 +1082,10 @@ os-tmpdir@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
+p-all-runner@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/p-all-runner/-/p-all-runner-0.0.2.tgz#b803f2fc1c77ed803b6cbce2afe45da0d8e1bddd"
+
 p-limit@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.2.0.tgz#0e92b6bedcb59f022c13d0f1949dc82d15909f1c"

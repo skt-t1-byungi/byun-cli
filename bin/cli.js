@@ -9,35 +9,59 @@ const kebabCase = require('lodash.kebabcase')
 const cli = new Cac({bin: 'byun'})
 
 cli
-  .command('new', {
-    desc: 'Create new project.'
-  }, async ipts => {
-    let cwd = process.cwd()
-    let name = ipts[0]
+  .command('new', 'Create new project.', async ipts => {
+    const cwd = process.cwd()
+    let name, dir
 
-    if (!name) {
+    if (ipts[0]) {
+      name = ipts[0]
+      dir = path.resolve(cwd, name)
+    } else {
       const {continueOk} = await prompts({
         type: 'confirm',
         name: 'continueOk',
-        message: `continue in the current folder??`
+        message: 'continue in the current folder??',
+        initial: true
       })
 
-      if (!continueOk) return ora('stop').fail()
+      if (!continueOk) return failLog('stop~')
 
       name = path.basename(cwd)
-      cwd = path.resolve(cwd, '../')
+      dir = cwd
     }
 
     // convert to kebab
     name = kebabCase(name)
 
-    const spinner = ora(`Creating "${name}" project.`).start()
+    const log = newLog(`Creating "${name}" project.`)
     try {
-      await byun.new({name, cwd})
-      spinner.succeed(`"${name}" was created.`)
+      await byun.new({name, dir})
+      log.succeed(`"${name}" was created.`)
     } catch (err) {
-      spinner.fail(err)
+      log.fail(err)
     }
   })
 
+cli
+  .command('ava', 'Prepare AVA.', async (ipts, {esm, browser}) => {
+    const dir = ipts[0] || process.cwd()
+
+    const log = newLog('Settings AVA.')
+    try {
+      await byun.ava(dir, browser, esm)
+      log.succeed('prepared AVA.')
+    } catch (err) {
+      log.fail(err)
+    }
+  })
+  .option('esm', { type: 'boolean', default: false })
+  .option('browser', { type: 'boolean', alias: 'b', default: false })
+
 cli.parse()
+
+function newLog (opts) {
+  return ora(opts).start()
+}
+function failLog (opts) {
+  return ora(opts).fail()
+}
