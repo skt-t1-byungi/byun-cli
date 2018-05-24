@@ -54,7 +54,7 @@ cli
       log.fail(err)
     }
   })
-  .option('esm', { type: 'boolean', alias: 'es', default: false })
+  .option('esm', { type: 'boolean', alias: 'e', default: false })
   .option('browser', { type: 'boolean', alias: 'b', default: false })
 
 cli.parse()
