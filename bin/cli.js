@@ -46,7 +46,7 @@ cli
   .command('ava', 'Prepare AVA.', async (ipts, {esm, browser}) => {
     const dir = ipts[0] || process.cwd()
 
-    const log = newLog('Settings AVA.')
+    const log = newLog('preparing...')
     try {
       await byun.ava(dir, browser, esm)
       log.succeed('prepared AVA.')
