@@ -48,13 +48,13 @@ cli
 
     const log = newLog('preparing...')
     try {
-      await byun.ava(dir, browser, esm)
+      await byun.ava(dir, {browser, esm})
       log.succeed('prepared AVA.')
     } catch (err) {
       log.fail(err)
     }
   })
-  .option('esm', { type: 'boolean', default: false })
+  .option('esm', { type: 'boolean', alias: 'es', default: false })
   .option('browser', { type: 'boolean', alias: 'b', default: false })
 
 cli.parse()
